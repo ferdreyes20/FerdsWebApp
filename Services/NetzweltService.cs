@@ -62,8 +62,8 @@ namespace FerdsWebApp.Services
                 var childTerritories = _territoriesFromApi.Where(ct => !string.IsNullOrEmpty(ct.Parent) && ct.Parent == territory.Id);
                 if(childTerritories != null && childTerritories.Count() > 0)
                 {
-                    territory.territories = childTerritories.ToList();
-                    ArrangeTerritories(territory.territories);
+                    territory.Territories = childTerritories.ToList();
+                    ArrangeTerritories(territory.Territories);
                 }
             }
             
