@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using FerdsWebApp.DTOs;
+using FerdsWebApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +12,17 @@ namespace FerdsWebApp.Controllers
     [Authorize(Policy = "RequireValidUsers")]
     public class HomeController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<string> GetPotaena()
+        private readonly INetzweltService _netzweltService;
+
+        public HomeController(INetzweltService netzweltService)
         {
-            return "Yes it's working!";
+            _netzweltService = netzweltService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ReturnTerritoryDto>> Get()
+        {
+            return await _netzweltService.GetTerritories();
         }
     }
 }

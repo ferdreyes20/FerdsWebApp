@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FerdsWebApp.DTOs;
@@ -8,6 +9,7 @@ namespace FerdsWebApp.Services
     public interface INetzweltService
     {
         Task<ReturnAuthUserDto> GetUser(AuthUserDto authUserDTO);
+        Task<ReturnTerritoryDto> GetTerritories();
     }
 
     public class NetzweltService : INetzweltService
@@ -16,6 +18,18 @@ namespace FerdsWebApp.Services
         public NetzweltService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+        }
+
+        public async Task<ReturnTerritoryDto> GetTerritories()
+        {
+            var url = "/Territories/All";
+            var response = await _httpClient.GetAsync(url);
+            var result = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+                return  null;
+
+            var returnTerritoryDto = JsonConvert.DeserializeObject<ReturnTerritoryDto>(result.ToString());
+            return returnTerritoryDto;
         }
 
         public async Task<ReturnAuthUserDto> GetUser(AuthUserDto authUserDTO)
@@ -32,5 +46,11 @@ namespace FerdsWebApp.Services
 
             return JsonConvert.DeserializeObject<ReturnAuthUserDto>(result.ToString());
         }
+
+        // private List<TerritoryDto> ArrangeTerritories(List<TerritoryDto> territories) 
+        // {
+        //     var arrangedTerritories = new List<TerritoryDto>();
+        //     return arrangedTerritories;
+        // }
     }
 }
