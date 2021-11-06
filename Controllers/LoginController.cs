@@ -1,10 +1,8 @@
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using FerdsWebApp.DTOs;
 using FerdsWebApp.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace FerdsWebApp.Controllers
 {
@@ -12,24 +10,28 @@ namespace FerdsWebApp.Controllers
     [Route("api/[Controller]")]
     public class LoginController : ControllerBase
     {
-        private  INetzweltService _netzweltService;
-        public LoginController(INetzweltService netzweltService)
+        private readonly INetzweltService _netzweltService;
+        private readonly ITokenService _tokenService;
+
+        public LoginController(INetzweltService netzweltService, ITokenService tokenService)
         {
             _netzweltService = netzweltService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("AuthUser")]
-        public async Task<ActionResult<string>> AutenticateUser(AuthUserDto authUserDTO) {
+        public async Task<ActionResult<ReturnAuthUserDto>> AutenticateUser(AuthUserDto authUserDTO) {
             if(!ModelState.IsValid)
             {
                return BadRequest(ModelState.Values.SelectMany(v => v.Errors)); 
             }
 
-            var userResult = await _netzweltService.GetUser(authUserDTO);
-            if(!string.IsNullOrEmpty(userResult.Error))
-                return BadRequest(userResult.Error);
-            
-            return Ok(userResult);
+            var returnUserDto = await _netzweltService.GetUser(authUserDTO);
+            if(!string.IsNullOrEmpty(returnUserDto.Error))
+                return BadRequest(returnUserDto.Error);
+
+            returnUserDto.Token = _tokenService.CreateToken(returnUserDto);
+            return Ok(returnUserDto);
         }
     }
 }
