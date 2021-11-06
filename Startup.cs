@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FerdsWebApp.Extensions;
 
 namespace FerdsWebApp
 {
@@ -26,29 +27,12 @@ namespace FerdsWebApp
         {
             services.AddScoped<ITokenService, TokenService>();
             services.AddControllersWithViews();
-            services.AddHttpClient<INetzweltService, NetzweltService>(c => {
-                c.BaseAddress = new Uri("https://netzwelt-devtest.azurewebsites.net");
-            });
+            services.AddAuthenticationSettings(Configuration);
+            services.AddHttpClientSettings(Configuration);
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
-            });
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => 
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                    };
-                });
-            services.AddAuthorization(opt => 
-            {
-                opt.AddPolicy("RequireValidUsers", policy => policy.RequireRole("basic-user"));
             });
         }
 
