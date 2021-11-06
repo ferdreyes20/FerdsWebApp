@@ -1,3 +1,5 @@
+using System;
+using FerdsWebApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -21,6 +23,9 @@ namespace FerdsWebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddHttpClient<INetzweltService, NetzweltService>(c => {
+                c.BaseAddress = new Uri("https://netzwelt-devtest.azurewebsites.net");
+            });
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

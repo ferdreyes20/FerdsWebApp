@@ -2,6 +2,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FerdsWebApp.DTOs;
+using FerdsWebApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -11,22 +12,24 @@ namespace FerdsWebApp.Controllers
     [Route("api/[Controller]")]
     public class LoginController : ControllerBase
     {
+        private  INetzweltService _netzweltService;
+        public LoginController(INetzweltService netzweltService)
+        {
+            _netzweltService = netzweltService;
+        }
+
         [HttpPost("AuthUser")]
-        public async Task<ActionResult<string>> AutenticateUser(AuthUserDTO authUserDTO) {
+        public async Task<ActionResult<string>> AutenticateUser(AuthUserDto authUserDTO) {
             if(!ModelState.IsValid)
             {
                return BadRequest(ModelState.Values.SelectMany(v => v.Errors)); 
             }
 
-            var url = "https://netzwelt-devtest.azurewebsites.net/Account/SignIn";
-            var json = JsonConvert.SerializeObject(authUserDTO);
-            var data = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-            using(var httpClient = new HttpClient())
-            {
-                var response = await httpClient.PostAsync(url, data);
-                return Ok(response.Content.ReadAsStringAsync().Result);
-            }
+            var userResult = await _netzweltService.GetUser(authUserDTO);
+            if(!string.IsNullOrEmpty(userResult.Error))
+                return BadRequest(userResult.Error);
+            
+            return Ok(userResult);
         }
     }
 }
