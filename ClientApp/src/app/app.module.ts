@@ -9,13 +9,15 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guards/auth-guard';
 import { TreeviewListComponent } from './_components/treeview-list/treeview-list.component';
+import { ListComponent } from './_components/list/list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    TreeviewListComponent
+    TreeviewListComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -4,8 +4,4 @@
 <span>Here are the list of territories</span>
 <br>
 <br>
-<ul>
-    <ng-container *ngFor="let territory of territories">
-        <treeview-list [currentTerritory]="territory"></treeview-list>
-    </ng-container>
-</ul>
+<list [territories]="territories"></list>
