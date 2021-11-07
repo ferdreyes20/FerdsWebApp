@@ -1,1 +1,21 @@
-<h1>Welcome Login!</h1>
+<h2 class="text-center">L O G I N</h2>
+
+<form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+    <div class="container-fluid">
+        <div *ngIf="errors" class="alert alert-danger">
+            <pre class="m-0">
+                <span *ngFor="let error of errors | keyvalue">
+                    {{error.key}} - {{error.value}}
+                </span>
+            </pre>
+        </div>
+        <br>
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" id="username" name="username" ngModel class="form-control" placeholder="Username" required autofocus>
+        <br>
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" id="password" name="password" ngModel class="form-control" placeholder="Password"  required >
+        <br>
+        <button class="btn btn-lg btn-primary text-right float-right" type="submit">Submit</button>
+    </div>
+</form>
