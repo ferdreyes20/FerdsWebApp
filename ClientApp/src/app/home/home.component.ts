@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
     this.getTerritories();
   }
 
-  getTerritories() {
+  getTerritories(): void {
     var token = localStorage.getItem("ferdsJwt");
     let headersOptions = new HttpHeaders()
       .set("Content-Type", "application/json")
@@ -39,5 +39,13 @@ export class HomeComponent implements OnInit {
         console.log({ "Home errors ": errors });
       }
     );
+  }
+
+  logout(): void 
+  {
+    localStorage.removeItem("ferdsUser");
+    localStorage.removeItem("ferdsJwt");
+
+    this.router.navigate(["login"]);
   }
 }
