@@ -3,11 +3,9 @@
 <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
     <div class="container-fluid">
         <div *ngIf="errors" class="alert alert-danger">
-            <pre class="m-0">
-                <span *ngFor="let error of errors | keyvalue">
-                    {{error.key}} - {{error.value}}
-                </span>
-            </pre>
+            <span *ngFor="let error of errors | keyvalue">
+                {{error.key}} - {{error.value}}
+            </span>
         </div>
         <br>
         <label for="username" class="sr-only">Username</label>

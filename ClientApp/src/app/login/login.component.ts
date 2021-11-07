@@ -41,8 +41,7 @@ export class LoginComponent implements OnInit {
         if(errors.error.errors) {
           this.errors = errors.error.errors;
         } else {
-          this.errors = 
-            JSON.parse(errors.error.error);
+          this.errors = { "ERROR" : errors.error.message };
         }
       }
     );
