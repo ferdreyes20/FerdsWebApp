@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("ferdsUser", JSON.stringify(response));
         localStorage.setItem("ferdsJwt", response.token);
 
-        debugger;
         this.router.navigate(["/"]);
       },
       (errors) => {
