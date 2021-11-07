@@ -1,0 +1,27 @@
+ul {
+    list-style-type: none;
+}
+
+.caret {
+    cursor: pointer;
+}
+
+.caret::before {
+    content: "\261B";
+    color: black;
+    display: inline-block;
+    margin-right: 6.6px;
+}
+
+.caret-down::before {
+    content: "\261B";
+    color: black;
+    display: inline-block;
+    margin-right: 6.6px;
+}
+
+.caret-down::before {
+    -ms-transform: rotate(90deg);       /* Not IE 9*/
+    -webkit-transform: rotate(90deg);   /* Not Safari*/
+    transform: rotate(90deg);           /* Not All */
+}
