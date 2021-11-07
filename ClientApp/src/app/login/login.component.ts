@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 
@@ -10,7 +10,7 @@ import { UserParams } from '../_models/userParams';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute) {
+  constructor(private httpClient: HttpClient, private router: Router ,private activatedRoute: ActivatedRoute) {
   }
   ngOnInit(): void {
     let user: UserParams;
@@ -25,10 +25,14 @@ export class LoginComponent implements OnInit {
       } as UserParams;
     });
 
-    this.http.post("api/Login/AuthUser", user).subscribe(
+    this.httpClient.post("api/Login/AuthUser", user).subscribe(
       (response: User) => {
         console.log({ "response": response });
         localStorage.setItem("ferdsUser", JSON.stringify(response));
+        localStorage.setItem("ferdsJwt", response.token);
+
+        debugger;
+        this.router.navigate(["/"]);
       },
       (errors) => {
         console.log({ "errors": errors });

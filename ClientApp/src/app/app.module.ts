@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './_guards/auth-guard';
 
 @NgModule({
   declarations: [
@@ -19,8 +20,8 @@ import { LoginComponent } from './login/login.component';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'Login', component: LoginComponent},
+      { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard]},
+      { path: 'login', component: LoginComponent},
     ])
   ],
   providers: [],
