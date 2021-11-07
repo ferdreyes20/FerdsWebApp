@@ -1,0 +1,10 @@
+<li *ngIf="currentTerritory" >
+    <span (click)="hideChildren = !hideChildren">
+        {{currentTerritory.name}}
+    </span>
+    <ul *ngIf="currentTerritory.territories && !hideChildren">
+        <ng-container *ngFor="let territory of currentTerritory.territories">
+            <treeview-list [currentTerritory]="territory"></treeview-list>
+        </ng-container>
+    </ul>    
+</li>

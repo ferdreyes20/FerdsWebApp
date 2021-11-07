@@ -10,22 +10,33 @@ import { User } from '../_models/user';
 })
 export class HomeComponent implements OnInit {
   public territories: Territory[] = [];
+  public user: User;
 
-  constructor(private httpClient: HttpClient, private router: Router) { }
+  constructor(private httpClient: HttpClient, private router: Router) {
+
+   }
 
   ngOnInit(): void {
-    var token = localStorage.getItem("ferdsJwt");
+    this.user = JSON.parse(localStorage.getItem("ferdsUser")) as User;
+    if(!this.user) {
+      this.router.navigate(["login"]);
+    }
 
+    this.getTerritories();
+  }
+
+  getTerritories() {
+    var token = localStorage.getItem("ferdsJwt");
     let headersOptions = new HttpHeaders()
       .set("Content-Type", "application/json")
       .set("Authorization", `Bearer ${token}`);
 
     this.httpClient.get("/api/Home", { headers: headersOptions }).subscribe(
-      (response: Territory[]) => {
-        console.log({ "territories": response });
+      (response: any) => {
+        this.territories = response.data;
       },
-      (error) => {
-        console.log({ "Home error ": error });
+      (errors) => {
+        console.log({ "Home errors ": errors });
       }
     );
   }

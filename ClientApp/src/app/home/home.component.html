@@ -1,1 +1,11 @@
-<h1>Welcome Home!</h1>
+<h1 class="text-center">WELCOME HOME!</h1>
+<br>
+<h2><strong>Territories</strong></h2>
+<span>Here are the list of territories</span>
+<br>
+<br>
+<ul>
+    <ng-container *ngFor="let territory of territories">
+        <treeview-list [currentTerritory]="territory"></treeview-list>
+    </ng-container>
+</ul>
